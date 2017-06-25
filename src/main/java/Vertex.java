@@ -4,9 +4,8 @@ import java.util.ArrayList;
 public class Vertex {
 
     private boolean isVisited;
-    private int distance = Integer.MAX_VALUE;
+    private int cost = Integer.MAX_VALUE;
     private ArrayList<Edge> edges = new ArrayList<Edge>();
-
 
     public void setVisited(boolean visited) {
         this.isVisited = visited;
@@ -16,16 +15,12 @@ public class Vertex {
         return this.isVisited;
     }
 
-    public void setDistance(int distance) {
-        this.distance = distance;
+    public void setCost(int cost) {
+        this.cost = cost;
     }
 
-    public int getDistance() {
-        return this.distance;
-    }
-
-    public void setEdges(ArrayList<Edge> edges) {
-        this.edges = edges;
+    public int getCost() {
+        return this.cost;
     }
 
     public ArrayList<Edge> getEdges() {
