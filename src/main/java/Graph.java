@@ -101,9 +101,9 @@ public class Graph {
         Map<String, Integer> cities = fileWithCities.getCitiesHashMap();
         for (String city: cities.keySet()){
             if (startCityIndex == cities.get(city)){
-                startCityName += city;
+                startCityName = city;
             } else if (destinationCityIndex == cities.get(city)){
-                destinationCityName += city;
+                destinationCityName = city;
             }
         }
         System.out.println("The least cost for travel from " + startCityName + " to " + destinationCityName + " is " + vertices.get(destinationCityIndex).getCost() + " zł");

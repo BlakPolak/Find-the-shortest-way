@@ -40,7 +40,6 @@ public class ReadFile {
             String cost = parts[costIndex];
             connections.add(fromCity + " " + toCity + " " + cost);
         }
-        System.out.println(connections);
         return connections;
     }
 
