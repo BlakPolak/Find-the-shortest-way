@@ -1,11 +1,11 @@
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
 
 
 public class ReadFile {
+    private ClassLoader classLoader = getClass().getClassLoader();
+    private File file = new File(classLoader.getResource("cities.txt").getFile());
+    private String filePath = file.getAbsolutePath();
     private Map<String, Integer> citiesHashMap;
     private List<String> citiesConnectionList = new ArrayList<>();
     public List<String> citiesConnectionAndCostsRepresentedByInt;
@@ -43,8 +43,8 @@ public class ReadFile {
         return connections;
     }
 
-    public void fileLinesToList() throws FileNotFoundException {
-        FileReader file = new FileReader("/home/ppolak/Desktop/Java/IdeaProjects/find-the-way-BlakPolak/src/main/java/citites.txt");  //address of the file
+    private void fileLinesToList() throws FileNotFoundException {
+        FileReader file = new FileReader(this.filePath);  //address of the file
         Scanner sc = new Scanner(file);
 
         while( sc.hasNextLine() ){
@@ -59,7 +59,7 @@ public class ReadFile {
         BufferedReader bufferedReader = null;
 
         try {
-            bufferedReader = new BufferedReader(new FileReader("/home/ppolak/Desktop/Java/IdeaProjects/find-the-way-BlakPolak/src/main/java/citites.txt"));
+            bufferedReader = new BufferedReader(new FileReader(this.filePath));
         } catch (FileNotFoundException e) {
             System.out.println("File error. Probably no such file in folder");
             e.getMessage();
@@ -73,14 +73,14 @@ public class ReadFile {
         return  numberOfLines;
     }
 
-    public void citiesToHashMap() throws IOException  {
+    private void citiesToHashMap() throws IOException  {
         int numberOfLines = this.countNumberOfLines() -1;
         int vertexNumberForCity = 0;
         int actualLineNumber = 0;
         BufferedReader bufferedReader = null;
 
         try {
-            bufferedReader = new BufferedReader(new FileReader("/home/ppolak/Desktop/Java/IdeaProjects/find-the-way-BlakPolak/src/main/java/citites.txt"));
+            bufferedReader = new BufferedReader(new FileReader(this.filePath));
         } catch (FileNotFoundException e) {
             System.out.println("File error. Probably no such file in folder");
             e.getMessage();

@@ -22,5 +22,5 @@
 hs_err_pid*
 /.idea/
 .idea/
-src/main/resources/
 src/test/
+target/
