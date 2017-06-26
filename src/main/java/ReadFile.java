@@ -5,32 +5,37 @@ import java.io.IOException;
 import java.util.*;
 
 
-public class ReadFileToHashMap {
+public class ReadFile {
     private Map<String, Integer> citiesHashMap;
     private List<String> citiesConnectionList = new ArrayList<>();
-    List<String> citiesRepresentedByNumbers;
+    public List<String> citiesConnectionAndCostsRepresentedByInt;
 
-    public ReadFileToHashMap() throws IOException {
+    public ReadFile() throws IOException {
         this.citiesHashMap = new HashMap<>();
-        this.citiesRepresentedByNumbers = new ArrayList<>();
+        this.citiesConnectionAndCostsRepresentedByInt = new ArrayList<>();
         citiesToHashMap();
         fileLinesToList();
-        this.citiesRepresentedByNumbers = replaceCitiesNameByNumbers();
+        this.citiesConnectionAndCostsRepresentedByInt = replaceCitiesNameByNumbers();
     }
 
     private List<String> replaceCitiesNameByNumbers() {
         List<String> connections = new ArrayList<>();
+        int fromCityIndex = 0;
+        int toCityIndex = 1;
+        int costIndex = 2;
+        String toCity = null;
+        String fromCity = null;
+
         for (int connection = 0; connection < this.citiesConnectionList.size()-1; connection ++) {
             String[] parts = citiesConnectionList.get(connection).split("\\s");
-            String fromCity = null;
-            String toCity = null;
-            if (this.citiesHashMap.containsKey(parts[0])) {
-                fromCity = this.citiesHashMap.get(parts[0]).toString();
+
+            if (this.citiesHashMap.containsKey(parts[fromCityIndex])) {
+                fromCity = this.citiesHashMap.get(parts[fromCityIndex]).toString();
             }
-            if (this.citiesHashMap.containsKey(parts[1])) {
-                toCity = this.citiesHashMap.get(parts[1]).toString();
+            if (this.citiesHashMap.containsKey(parts[toCityIndex])) {
+                toCity = this.citiesHashMap.get(parts[toCityIndex]).toString();
             }
-            String cost = parts[2];
+            String cost = parts[costIndex];
             connections.add(fromCity + " " + toCity + " " + cost);
         }
         System.out.println(connections);
@@ -40,10 +45,10 @@ public class ReadFileToHashMap {
     public void fileLinesToList() throws FileNotFoundException {
         FileReader file = new FileReader("/home/ppolak/Desktop/Java/IdeaProjects/find-the-way-BlakPolak/src/main/java/citites.txt");  //address of the file
         Scanner sc = new Scanner(file);
-        while( sc.hasNextLine() ){  //checking for the presence of next Line
-            this.citiesConnectionList.add(sc.nextLine());  //reading and storing all citiesConnectionList
+        while( sc.hasNextLine() ){
+            this.citiesConnectionList.add(sc.nextLine());
         }
-        sc.close();  //close the scanner
+        sc.close();
     }
 
     private int countNumberOfLines() throws IOException {
@@ -59,7 +64,6 @@ public class ReadFileToHashMap {
             numberOfLines ++;
         }
         in.close();
-
         return  numberOfLines;
     }
 
@@ -90,10 +94,10 @@ public class ReadFileToHashMap {
                 vertexNumberForCity++;
             }
             if (numberOfLines == actualLineNumber){
-                int tempFromVertexNumber = this.citiesHashMap.get(parts[fromCity]);
-                int tempToVertexNumber = this.citiesHashMap.get(parts[toCity]);
                 int startCityIndex = 0;
                 int destinationCityIndex = this.citiesHashMap.size() -1;
+                int tempFromVertexNumber = this.citiesHashMap.get(parts[fromCity]);
+                int tempToVertexNumber = this.citiesHashMap.get(parts[toCity]);
                 for (String city : this.citiesHashMap.keySet()) {
                     if (this.citiesHashMap.get(city).equals(startCityIndex)) {
                         this.citiesHashMap.put(city, tempFromVertexNumber);
@@ -110,5 +114,11 @@ public class ReadFileToHashMap {
         in.close();
         System.out.println(this.citiesHashMap.toString());
     }
+    public List<String> getCitiesConnectionAndCostsRepresentedByInt() {
+        return citiesConnectionAndCostsRepresentedByInt;
+    }
 
+    public Map<String, Integer> getCitiesHashMap() {
+        return citiesHashMap;
+    }
 }

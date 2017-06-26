@@ -1,5 +1,3 @@
-
-
 public class Edge {
 
     private int fromVertex;
@@ -16,24 +14,12 @@ public class Edge {
         return fromVertex;
     }
 
-    public void setFromVertex(int fromVertex) {
-        this.fromVertex = fromVertex;
-    }
-
     public int getToVertex() {
         return toVertex;
     }
 
-    public void setToVertex(int toVertex) {
-        this.toVertex = toVertex;
-    }
-
     public int getCost() {
         return cost;
-    }
-
-    public void setCost(int cost) {
-        this.cost = cost;
     }
 
     public int getContiguousVertex( int vertex){

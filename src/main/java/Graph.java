@@ -1,5 +1,8 @@
+import com.sun.org.apache.xpath.internal.SourceTree;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class Graph {
 
@@ -47,8 +50,9 @@ public class Graph {
     }
 
     public void calculateLeastCost() {
-        this.vertices.get(0).setCost(0);
-
+        int startCityIndex = 0;
+        int startCosts = 0;
+        this.vertices.get(startCityIndex).setCost(startCosts);
         int actualVertexIndex = 0;
         for (int i = 0; i < this.vertices.size(); i++) {
             ArrayList<Edge> vertexEdges = this.vertices.get(actualVertexIndex).getEdges();
@@ -60,8 +64,8 @@ public class Graph {
                     int costForEdge = vertexEdges.get(j).getCost();
                     int alreadyCalculatedCost = this.vertices.get(actualVertexIndex).getCost();
                     int temporaryCost = alreadyCalculatedCost + costForEdge;
-
                     int costForContiguousVertex = this.vertices.get(contiguousVertexIndex).getCost();
+
                     if (temporaryCost < costForContiguousVertex) {
                         Vertex contiguousVertex = this.vertices.get(contiguousVertexIndex);
                         contiguousVertex.setCost(temporaryCost);
@@ -89,9 +93,39 @@ public class Graph {
         return vertexIndex;
     }
 
-    public void print() {
-        for (int i = 0; i < this.vertices.size(); i++) {
-            System.out.println("Cost from O to " + i + " is " + vertices.get(i).getCost());
+    public void printTravelCostForChosenConnection(ReadFile fileWithCities) {
+        int startCityIndex = 0;
+        int destinationCityIndex = this.vertices.size()-1;
+        String startCityName = "";
+        String destinationCityName = "";
+        Map<String, Integer> cities = fileWithCities.getCitiesHashMap();
+        for (String city: cities.keySet()){
+            if (startCityIndex == cities.get(city)){
+                startCityName += city;
+            } else if (destinationCityIndex == cities.get(city)){
+                destinationCityName += city;
+            }
+        }
+        System.out.println("The least cost for travel from " + startCityName + " to " + destinationCityName + " is " + vertices.get(destinationCityIndex).getCost() + " zł");
+
+    }
+
+    public void printTravelCostForOtherCities(ReadFile fileWithCities) {
+        int startCityIndex = 0;
+        String startCityName = "";
+        String destinationCityName = "";
+        Map<String, Integer> cities = fileWithCities.getCitiesHashMap();
+        System.out.println("\nTo fly to other cities at the least cost using entered connections you have to spend accordingly:");
+        for (int i = 1 ; i < this.vertices.size() - 1; i++){
+            int destinationCityIndex = i;
+            for (String city: cities.keySet()){
+                if (startCityIndex == cities.get(city)){
+                    startCityName = city;
+                } else if (destinationCityIndex == cities.get(city)){
+                    destinationCityName = city;
+                }
+            }
+            System.out.println("From " + startCityName + " to " + destinationCityName + " -> " + vertices.get(destinationCityIndex).getCost() + " zł");
         }
     }
 }
