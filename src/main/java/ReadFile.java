@@ -32,9 +32,11 @@ public class ReadFile {
             if (this.citiesHashMap.containsKey(parts[fromCityIndex])) {
                 fromCity = this.citiesHashMap.get(parts[fromCityIndex]).toString();
             }
+
             if (this.citiesHashMap.containsKey(parts[toCityIndex])) {
                 toCity = this.citiesHashMap.get(parts[toCityIndex]).toString();
             }
+
             String cost = parts[costIndex];
             connections.add(fromCity + " " + toCity + " " + cost);
         }
@@ -45,25 +47,30 @@ public class ReadFile {
     public void fileLinesToList() throws FileNotFoundException {
         FileReader file = new FileReader("/home/ppolak/Desktop/Java/IdeaProjects/find-the-way-BlakPolak/src/main/java/citites.txt");  //address of the file
         Scanner sc = new Scanner(file);
+
         while( sc.hasNextLine() ){
             this.citiesConnectionList.add(sc.nextLine());
         }
+
         sc.close();
     }
 
     private int countNumberOfLines() throws IOException {
         int numberOfLines = 0;
-        BufferedReader in = null;
+        BufferedReader bufferedReader = null;
+
         try {
-            in = new BufferedReader(new FileReader("/home/ppolak/Desktop/Java/IdeaProjects/find-the-way-BlakPolak/src/main/java/citites.txt"));
+            bufferedReader = new BufferedReader(new FileReader("/home/ppolak/Desktop/Java/IdeaProjects/find-the-way-BlakPolak/src/main/java/citites.txt"));
         } catch (FileNotFoundException e) {
             System.out.println("File error. Probably no such file in folder");
             e.getMessage();
         }
-        while (in.readLine() != null){
+
+        while (bufferedReader.readLine() != null){
             numberOfLines ++;
         }
-        in.close();
+
+        bufferedReader.close();
         return  numberOfLines;
     }
 
@@ -71,49 +78,54 @@ public class ReadFile {
         int numberOfLines = this.countNumberOfLines() -1;
         int vertexNumberForCity = 0;
         int actualLineNumber = 0;
-        BufferedReader in = null;
+        BufferedReader bufferedReader = null;
 
         try {
-            in = new BufferedReader(new FileReader("/home/ppolak/Desktop/Java/IdeaProjects/find-the-way-BlakPolak/src/main/java/citites.txt"));
+            bufferedReader = new BufferedReader(new FileReader("/home/ppolak/Desktop/Java/IdeaProjects/find-the-way-BlakPolak/src/main/java/citites.txt"));
         } catch (FileNotFoundException e) {
             System.out.println("File error. Probably no such file in folder");
             e.getMessage();
         }
 
-        String line = "";
-        while ((line = in.readLine()) != null) {
+        String line;
+        while ((line = bufferedReader.readLine()) != null) {
             int fromCity = 0 ;
             int toCity = 1 ;
             String parts[] = line.split("\\s");
+
             if (!citiesHashMap.containsKey(parts[fromCity])){
                 this.citiesHashMap.put(parts[fromCity], vertexNumberForCity);
                 vertexNumberForCity++;
             }
+
             if (!citiesHashMap.containsKey(parts[toCity])){
                 this.citiesHashMap.put(parts[toCity], vertexNumberForCity);
                 vertexNumberForCity++;
             }
+
             if (numberOfLines == actualLineNumber){
                 int startCityIndex = 0;
                 int destinationCityIndex = this.citiesHashMap.size() -1;
                 int tempFromVertexNumber = this.citiesHashMap.get(parts[fromCity]);
                 int tempToVertexNumber = this.citiesHashMap.get(parts[toCity]);
+
                 for (String city : this.citiesHashMap.keySet()) {
+
                     if (this.citiesHashMap.get(city).equals(startCityIndex)) {
                         this.citiesHashMap.put(city, tempFromVertexNumber);
                     } else if (this.citiesHashMap.get(city).equals(destinationCityIndex)){
                         this.citiesHashMap.put(city, tempToVertexNumber);
                     }
-                this.citiesHashMap.put(parts[fromCity], startCityIndex);
-                this.citiesHashMap.put(parts[toCity], destinationCityIndex);
+
+                    this.citiesHashMap.put(parts[fromCity], startCityIndex);
+                    this.citiesHashMap.put(parts[toCity], destinationCityIndex);
                 }
             }
             actualLineNumber ++;
         }
-
-        in.close();
-        System.out.println(this.citiesHashMap.toString());
+        bufferedReader.close();
     }
+
     public List<String> getCitiesConnectionAndCostsRepresentedByInt() {
         return citiesConnectionAndCostsRepresentedByInt;
     }
